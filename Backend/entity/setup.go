@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -34,102 +35,19 @@ func SetupDatabase() {
 
 	// Migrate the schema
 	database.AutoMigrate(
-		
-		
-		
-		
+		//01 User
 		&User{},
 		&UserType{},
-
-		// 01 
-		&Gender{},
-		&Blood_type{},
-		&Drug_Allergy{},
-		&RIGHTS{},
-		&Patient{},
-
-		// 02 
-		&DiseaseType{},
-		&Disease{},
-		&InpantientDepartment{},
-		&Triage{},
-
-		// 03 
-      	&Bed{},
-    		&Zone{},
-		&Map_Bed{},
-
-		// 04 ระบบติดตามอาการผู้ป่วย 
-		&Level{},
-		&Symptom{},
-
 		// 05 ระบบโภชนาการ
 		&Manage{},
 		&Nutrition{},
 
-		// 06 ระบบจ่ายยา
-		&WHERE{},
-		&BASKET{},
-		&MEDICINE{},
-
-		// 07
-		&VisitorType{},
-		&VisitRecord{},
-
 	)
 
-	//TODO 05 Manage
-	// database.Create(&Nutrition{Type: "กำหนดเอง",Receive: 0, Detail: "มีการจัดโภชนาการตามแพทย์เห็นสมควร"})
-	// database.Create(&Nutrition{Type: "อาหารอ่อน, นิ่ม",Receive: 2000, Detail: "ข้าวต้ม, นม, มะม่าง"})
-	// database.Create(&Nutrition{Type: "อาหารที่มีการเคี๊ยวหน่อย",Receive: 2200, Detail: "ไข่ต้ม, แตงกวา, ข้าวผัด, นม, มะม่วง"})
-	//add data 01 (add_patient)
-	//เปิดใช้งานเฉพาระตอนที่ในฐานข้อมูลว่างเปล่า เพราะจะทำการบันทึกซ้ำ
-	//ใส่ข้อมูลที่เป็นข้อมูลที่ไม่เปลี่ยนแปลง
-	// //ตาราง หมู่เลือดs
-	// database.Create(&Blood_type{Blood_Name: "A"})
-	// database.Create(&Blood_type{Blood_Name: "B"})
-	// database.Create(&Blood_type{Blood_Name: "O"})
-	// database.Create(&Blood_type{Blood_Name: "AB"})
-	// database.Create(&Blood_type{Blood_Name: "อื่น ๆ โปรดกรอกในช่องข้อมูลเพิ่มเติม"})
-	// //ตาราง เพศ
-	// database.Create(&Gender{Gender_Name: "ชาย"})
-	// database.Create(&Gender{Gender_Name: "หญิง"})
-	// //ตาราง ข้อมูลการแพ้ยา
-	// database.Create(&Drug_Allergy{Drug_Name: "ไม่เคยแพ้ยา", Drug_Group: "-"})
-	// database.Create(&Drug_Allergy{Drug_Name: "Paracetamol ", Drug_Group: "ยาระงับปวดและลดไข้"})
-	// database.Create(&Drug_Allergy{Drug_Name: "Penicillin  ", Drug_Group: "ยาปฏิชีวนะ"})
-	// database.Create(&Drug_Allergy{Drug_Name: "NSAIDs ", Drug_Group: "ยาแก้อักเสบ"})
-	// database.Create(&Drug_Allergy{Drug_Name: "Carbamazepine ", Drug_Group: "ยากันชัก"})
-	// database.Create(&Drug_Allergy{Drug_Name: "อื่น ๆ โปรดกรอกในช่องข้อมูลเพิ่มเติม", Drug_Group: "-"})
-	// //ตาราง สิทธิ์การรักษาพยาบาล
-	// database.Create(&RIGHTS{RIGHTS_Name: "ผู้ป่วยทั่วไปที่ไม่มีสิทธิ์การรักษาพยาบาล"})
-	// database.Create(&RIGHTS{RIGHTS_Name: "สิทธิ์ข้าราชการ"})
-	// database.Create(&RIGHTS{RIGHTS_Name: "สิทธิ์บัตรทอง"})
-	// database.Create(&RIGHTS{RIGHTS_Name: "สิทธิ์ประกันสังคม"})
-	// database.Create(&RIGHTS{RIGHTS_Name: "สิทธิ์องค์กรคู่สัญญา"})
-	// database.Create(&RIGHTS{RIGHTS_Name: "ผู้ป่วยที่ถือบัตรประกันสุขภาพ"})
-	// database.Create(&RIGHTS{RIGHTS_Name: "อื่น ๆ โปรดกรอกในช่องข้อมูลเพิ่มเติม"})
-	// database.Create(&UserType{UserType:"พยาบาล"})
-	// database.Create(&UserType{UserType:"หมอ"})
-
-	// // เพิ่มข้อมูลตาราง Level
-	// database.Create(&Level{Level_name: "Better"})
-	// database.Create(&Level{Level_name: "Stable"})
-	// database.Create(&Level{Level_name: "Worse"})
-	// // เพิ่มข้อมูลตาราง MEDICINE
-	// database.Create(&MEDICINE{Name: "HALOPERIDOL ",NameTH: "ยาระงับประสาทหูแว่ว ", How: "รับประทานครั้งละ1 เม็ด,วันละ 1 ครั้ง, หลังอาหาร, เช้า", So: "Tab", Unit: "MG."})
-	// database.Create(&MEDICINE{Name: "AMOXY ", NameTH: "ยาปฏิชีวนะกลุ่มเพนิซิลลิน  ",How: "รับประทานครั้งละ1 เม็ด,วันละ 2 ครั้ง", So: "Tab", Unit: "gm."})
-	// database.Create(&MEDICINE{Name: "PHARA",NameTH: "ยาพารา", How: "หลังอาหาร เช้า เย็น", So: "Tab", Unit: "MG."})
-	// database.Create(&WHERE{Name: "ห้องผู้ป่วยใน"})
-	// database.Create(&WHERE{Name: "ห้องผู้ป่วยนอก"})
-	// database.Create(&WHERE{Name: "ห้องผู้ป่วย VIP"})
-	// database.Create(&WHERE{Name: "ห้องฉุกเฉิน"})
-	// database.Create(&WHERE{Name: "ไปรษณีย์"})
-
-	//TODO 07
-	// database.Create(&VisitorType{Name: "ญาติผู้ป่วย"})
-	// database.Create(&VisitorType{Name: "อื่นๆ"})
-  db = database
-  
-
+	//05 Manage ข้อมูลที่ต้องเตรียมไว้ก่อน
+	database.Create(&Nutrition{Type: "กำหนดเอง",Receive: 0, Detail: "มีการจัดโภชนาการตามแพทย์เห็นสมควร"})
+	database.Create(&Nutrition{Type: "อาหารอ่อน, นิ่ม",Receive: 2000, Detail: "ข้าวต้ม, นม, มะม่าง"})
+	database.Create(&Nutrition{Type: "อาหารที่มีการเคี๊ยวหน่อย",Receive: 2200, Detail: "ไข่ต้ม, แตงกวา, ข้าวผัด, นม, มะม่วง"})
+	
+  	db = database
 }

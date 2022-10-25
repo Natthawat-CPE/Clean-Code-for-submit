@@ -1,65 +1,36 @@
 import React, { useEffect, useState } from "react";
-import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-
 import Container from "@mui/material/Container";
-
 import Paper from "@mui/material/Paper";
-
 import Grid from "@mui/material/Grid";
-
 import TextField from "@mui/material/TextField";
-
 import { FormControl } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-
-import {
-  ManageInterface,
-  NutritionInterface,
-} from "../interfaces/NutritionUI";
-
-import { MappingBedInterface } from "../interfaces/MapBedUI";
-
+import { ManageInterface, NutritionInterface } from "../interfaces/NutritionUI";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
 import MenuItem from "@mui/material/MenuItem";
-
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { Link as RouterLink } from "react-router-dom";
-import ResponsiveAppBar from './Bar_02';
+import ResponsiveAppBar from "./Bar_02";
 
 function Manage() {
   //[ตารางหลัก] //ที่เอาไปใส่จริงๆ
   const userID = parseInt(localStorage.getItem("uid") + "");
-  console.log(userID);
   const [userName, setUserName] = useState("");
-
   const [nutritionID, setNutritionID] = useState("");
   const [map_bedID, setMap_BedID] = useState("");
-
   const [date, setDate] = React.useState<Date | null>(new Date());
   const [comment, setComment] = useState("");
 
-  // data ที่ได้มาจากการ fethch //ได้ข้อมูลทั้งหมดยังไม่เป็นตัวเลขเลยที่ต้องการใส่ในตารางหลัก
+  // data ที่ได้มาจากการ fethch
   const [nutrition, setNutrition] = useState<NutritionInterface[]>([]);
   const [manage, SetManage] = React.useState<Partial<ManageInterface>>({});
-
-
-
-
-  // ตารางที่ได้มาจากตารางเพื่อน
-
-  // const [MapBeds, setMapbeds] = useState<any[]>([]);
 
   //check save
   const [success, setSuccess] = useState(false);
@@ -76,29 +47,20 @@ function Manage() {
   };
 
   // function submit
-
   const convertType = (data: string | number | undefined) => {
     let val = typeof data === "string" ? parseInt(data) : data;
     return val;
   };
 
   async function submit() {
-    // async function = Synchronous
-    // เตรียม data ที่จะส่งออก
-    //!! NOTE : ตัว let ภายในตัวแปรต้อง match กับ schema ของ entity หลัก ไม่งั้นแตก !!!!
     let data = {
       User_ID: userID,
-      //Age: typeof user.Age === "string" ? parseInt(user.Age) : 0,
-      // NutritionID: nutritionID,
       NutritionID: convertType(nutritionID),
-      // Map_BedID: map_bedID,
       Map_BedID: convertType(map_bedID),
       Date: date,
       Comment: comment,
     };
 
-
-    console.log(data); // log ดู data
     const apiUrl = "http://localhost:8080/CreateManage";
     const requestOptions = {
       method: "POST",
@@ -120,34 +82,14 @@ function Manage() {
     setComment("");
   }
 
-  // onchange in combobox //สร้างฟังก์ชันสำหรับ คอยรับการกระทำ เมื่อคลิ๊ก หรือ เลือก
+  // onchange in combobox
   const onchangeMap_Bed = (event: SelectChangeEvent) => {
     setMap_BedID(event.target.value as string);
   };
 
-  // const onChangeDoctor = (event: SelectChangeEvent) => {
-  //   setDoctorID(event.target.value as string);
-  // };
-
   const onChangeNutrition = (event: SelectChangeEvent) => {
     setNutritionID(event.target.value as string);
   };
-
-  //function fetch data จาก backend
-  // const getDoctor = async () => {
-  //   const apiUrl = "http://localhost:8080/GetUser";
-  //   const requestOptions = {
-  //     method: "GET",
-  //     headers: { "Content-Type": "application/json" },
-  //   };
-  //   fetch(apiUrl, requestOptions)
-  //     .then((response) => response.json())
-  //     .then((res) => {
-  //       if (res.data) {
-  //         setDoctor(res.data);
-  //       }
-  //     });
-  // };
 
   const getUser = async () => {
     const apiUrl = `http://localhost:8080/user/${userID}`;
@@ -160,11 +102,7 @@ function Manage() {
       .then((res) => {
         if (res.data) {
           setUserName(res.data.Name);
-          // console.log(res.data);
         }
-        // else {
-        //   // setBeds([]);
-        // }
       });
   };
 
@@ -185,7 +123,6 @@ function Manage() {
       });
   };
 
-  // const [mapbeds, setMapbed] = React.useState<MappingBedInterface[]>([]);
   const [MapBeds, setMapbeds] = useState<any[]>([]);
   const getMappigBed = async () => {
     const apiUrl = "http://localhost:8080/GetListMapBeds";
@@ -198,16 +135,12 @@ function Manage() {
       .then((res) => {
         if (res.data) {
           setMapbeds(res.data);
-          // setFiltertriages(res.data)
-          // setMapbeds(res.data.Triage.Patient.Patient_Name);
-          // setFiltertriages(res.data)
         }
       });
   };
 
   //========function useEffect ========
   useEffect(() => {
-    // getDoctor();
     getUser();
     getNutrition();
     getMappigBed();
@@ -232,8 +165,7 @@ function Manage() {
     setError(false);
   };
 
-  //Uer inter face
-
+  //Userinterface
   return (
     <div>
       <Snackbar
@@ -253,7 +185,6 @@ function Manage() {
       </Snackbar>
       <ResponsiveAppBar />
 
-
       <Container maxWidth="md">
         <Box>
           <Paper>
@@ -272,7 +203,6 @@ function Manage() {
                   variant="h4"
                   color="#558b2f"
                   gutterBottom
-                  //align="center"
                   fontFamily="Arial"
                 >
                   <hr color="Green" />
@@ -331,20 +261,6 @@ function Manage() {
               <Grid item xs={6}>
                 <p>แพทย์ผู้จัดการ</p>
                 <FormControl fullWidth>
-                  {/* <Select
-                    id="Patient_Name"
-                    value={doctorID}
-                    displayEmpty
-                    inputProps={{ "aria-label": "Without label" }}
-                    onChange={onChangeDoctor}
-                  >
-                    <MenuItem value="">เลือก</MenuItem>
-                    {doctor.map((doctor) => (
-                      <MenuItem value={doctor.ID} key={doctor.ID}>
-                        {doctor.Name}
-                      </MenuItem>
-                    ))}
-                  </Select> */}
                   <TextField
                     fullWidth
                     id="outlined-read-only-input"
@@ -360,9 +276,6 @@ function Manage() {
                 <FormControl fullWidth variant="outlined">
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                      // label="Curreunt Time"
-                      // mask="__/__/____ __:__"
-                      // views={["year", "month", "day"]}
                       value={date}
                       onChange={(date) => {
                         setDate(date);
@@ -381,16 +294,15 @@ function Manage() {
                   multiline
                   rows={4}
                   onChange={handleInputChange}
-
-                // onChange={(comment) => {
-                //   setComment(comment.target.value);
-                // }}
-
-                // defaultValue="Default Value"
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button sx={{ backgroundColor: "#C70039", marginY: 3 }} component={RouterLink} to="/HomePage2" variant="contained">
+                <Button
+                  sx={{ backgroundColor: "#C70039", marginY: 3 }}
+                  component={RouterLink}
+                  to="/HomePage2"
+                  variant="contained"
+                >
                   ย้อนกลับ
                 </Button>
                 <Button
@@ -402,7 +314,6 @@ function Manage() {
                 >
                   <b>บันทึก</b>
                 </Button>
-
               </Grid>
             </Grid>
           </Paper>
